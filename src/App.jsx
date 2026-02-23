@@ -15,8 +15,8 @@ function useSmoothNav(flashRef) {
             e.preventDefault();
 
             const targetId = anchor.getAttribute('href').slice(1);
-            const target = document.getElementById(targetId);
-            if (!target) return;
+            const target = targetId ? document.getElementById(targetId) : null;
+            const scrollTarget = target || 0; // no ID = scroll to top
 
             // Subtle flash overlay for a cinematic section-cut feel
             if (flashRef.current) {
@@ -37,7 +37,7 @@ function useSmoothNav(flashRef) {
             // Smooth GSAP scroll with premium easing
             gsap.to(window, {
                 duration: 1.35,
-                scrollTo: { y: target, offsetY: 80 },
+                scrollTo: { y: scrollTarget, offsetY: target ? 80 : 0 },
                 ease: 'power4.inOut',
             });
         };
@@ -181,9 +181,9 @@ export default function App() {
             </div>
 
             {/* NAVBAR */}
-            <nav className="navbar fixed top-5 left-1/2 -translate-x-1/2 z-40 w-[calc(100%-2rem)] max-w-5xl px-5 py-3 rounded-full flex items-center justify-between transition-all duration-500 border bg-primary/40 backdrop-blur-md border-white/10 text-white shadow-lg [&.nav-scrolled]:bg-background/90 [&.nav-scrolled]:backdrop-blur-xl [&.nav-scrolled]:text-primary [&.nav-scrolled]:border-border [&.nav-scrolled]:shadow-sm">
+            <nav className="navbar fixed top-5 left-4 right-4 mx-auto z-40 max-w-5xl px-5 py-3 rounded-full flex items-center justify-between transition-[background-color,color,border-color,box-shadow] duration-500 border bg-primary/40 backdrop-blur-md border-white/10 text-white shadow-lg [&.nav-scrolled]:bg-background/90 [&.nav-scrolled]:backdrop-blur-xl [&.nav-scrolled]:text-primary [&.nav-scrolled]:border-border [&.nav-scrolled]:shadow-sm">
                 {/* Logo */}
-                <div className="font-serif text-lg tracking-wide uppercase font-semibold">Sekar</div>
+                <a href="#" className="font-serif text-lg tracking-wide uppercase font-semibold">Sekar</a>
 
                 {/* Desktop links */}
                 <div className="hidden md:flex gap-8 text-sm font-medium tracking-wide">
@@ -199,12 +199,12 @@ export default function App() {
 
                 {/* Mobile: phone + hamburger */}
                 <div className="flex md:hidden items-center gap-3">
-                    <a href="tel:+919443921222" className="p-2 text-white/80 hover:text-accent transition-colors">
+                    <a href="tel:+919443921222" className="p-2 opacity-80 hover:opacity-100 hover:text-accent transition-colors">
                         <Phone size={18} />
                     </a>
                     <button
                         onClick={() => setMenuOpen(o => !o)}
-                        className="p-2 text-white/90 hover:text-white transition-colors"
+                        className="p-2 opacity-90 hover:opacity-100 transition-colors"
                         aria-label="Toggle menu"
                     >
                         <Menu size={22} />
@@ -298,7 +298,7 @@ export default function App() {
                             </div>
                             <h3 className="text-xl font-semibold mb-3 tracking-tight">Trade Facilitation</h3>
                             <p className="text-textDark/70 leading-relaxed mb-8 flex-1">
-                                End-to-end logistics coordination, ensuring seamless transport and delivery from dryer yards directly to mill silos.
+                                Dedicated logistics coordination available upon request, delivering a fully managed transport solution from dryer yards to mill silos.
                             </p>
                             <div className="text-sm font-medium text-accent border-b border-accent/30 w-fit pb-1">Transport Management</div>
                         </div>
